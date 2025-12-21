@@ -1,2 +1,3 @@
-# movie-barcode-generator
-Movie Barcode Generator
+# Movie Barcode Generator
+
+A tool to generate movie barcodes.
