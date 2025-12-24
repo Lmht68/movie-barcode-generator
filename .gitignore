@@ -6,5 +6,6 @@ build_local.ps1
 # CMake build directory
 build/
 
-# Data files
+# Data & log files
 data/
+logs/

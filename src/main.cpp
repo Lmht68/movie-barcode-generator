@@ -1,11 +1,17 @@
-#include <iostream>
-#include <QApplication>
 #include <opencv2/opencv.hpp>
+#include <QApplication>
+
+#include <iostream>
+#include <filesystem>
+
+#include "utils/logger.h"
 
 int main(int argc, char *argv[])
 {
-    std::cout << "Qt version: " << QT_VERSION << std::endl;
-    std::cout << "OpenCV version: " << CV_VERSION << std::endl;
+    // Initialize spdlog
+    app_logger::InitLogger();
+    spdlog::info("Movie Barcode Generator starting...");
+    spdlog::info("Environment: Qt {} | OpenCV {}", QT_VERSION_STR, CV_VERSION);
 
     QApplication app(argc, argv);
     return app.exec();
