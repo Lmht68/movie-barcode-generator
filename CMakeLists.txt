@@ -9,8 +9,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+# Find required packages
 find_package(spdlog CONFIG REQUIRED)
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 find_package(OpenCV REQUIRED)
 
+# Include source directory
 add_subdirectory(src)

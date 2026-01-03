@@ -1,4 +1,5 @@
 #include "utils/logger.h"
+#include "gui/mainwindow.h"
 
 #include <opencv2/opencv.hpp>
 #include <QApplication>
@@ -20,6 +21,8 @@ int main(int argc, char *argv[])
             spdlog::info("Movie Barcode Generator starting...");
 
             // Initialize and show main window
+            MainWindow main_window;
+            main_window.show();
 
             return app.exec();
         }

@@ -1,9 +1,14 @@
 add_subdirectory(utils)
+add_subdirectory(gui)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} 
+    main.cpp
+    ${CMAKE_SOURCE_DIR}/res/res.qrc
+)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
     app_utils
+    app_gui
     Qt6::Widgets 
     ${OpenCV_LIBS}
 )
