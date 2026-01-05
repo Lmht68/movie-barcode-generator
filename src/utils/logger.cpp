@@ -29,6 +29,32 @@ namespace
         oss << std::put_time(&tm, "%Y-%m-%d_%H-%M-%S");
         return oss.str();
     }
+
+    template <typename Rep, typename Period>
+
+    void DeleteOldLogs(const std::filesystem::path &log_dir, std::chrono::duration<Rep, Period> max_age)
+    {
+        const auto now = std::chrono::system_clock::now();
+
+        for (const auto &entry : std::filesystem::directory_iterator(log_dir))
+        {
+            if (!entry.is_regular_file())
+                continue;
+
+            if (entry.path().extension() != ".log")
+                continue;
+
+            auto ftime = entry.last_write_time();
+
+            auto sctp = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
+                ftime - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now());
+
+            if (now - sctp > max_age)
+            {
+                std::filesystem::remove(entry.path());
+            }
+        }
+    }
 }
 
 namespace app_logger
@@ -44,6 +70,12 @@ namespace app_logger
                 std::filesystem::create_directory("logs");
             }
 
+            // Delete old logs
+#ifndef NDEBUG
+            DeleteOldLogs("logs", std::chrono::hours(1)); // 1 hour for debug builds
+#else
+            DeleteOldLogs("logs", std::chrono::hours(24 * 7)); // 7 days for release builds
+#endif
             // Get current timestamp for log file name
             std::string log_filename = "logs/log_" + GetCurrentTimestamp() + ".log";
             // Setup sinks (Console + Dynamic File)
