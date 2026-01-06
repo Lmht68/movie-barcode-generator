@@ -1,9 +1,9 @@
 add_library(app_gui STATIC
     # Headers
-    mainwindow.h
+    main_window.h
 
     # Sources
-    mainwindow.cpp
+    main_window.cpp
 )
 
 target_include_directories(app_gui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -1,28 +1,26 @@
 #include "logger.h"
 
-#include "spdlog/spdlog.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/spdlog.h"
 
+#include <chrono>
+#include <ctime>
 #include <filesystem>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <iomanip>
-#include <ctime>
-#include <chrono>
 
-namespace
-{
-    std::string GetCurrentTimestamp()
-    {
+namespace {
+    std::string GetCurrentTimestamp() {
         auto now = std::chrono::system_clock::now();
         std::time_t t = std::chrono::system_clock::to_time_t(now);
 
         std::tm tm{};
 #ifdef _WIN32
-        localtime_s(&tm, &t); // Windows-safe
+        localtime_s(&tm, &t);  // Windows-safe
 #else
-        localtime_r(&t, &tm); // POSIX-safe
+        localtime_r(&t, &tm);  // POSIX-safe
 #endif
 
         std::ostringstream oss;
@@ -32,55 +30,51 @@ namespace
 
     template <typename Rep, typename Period>
 
-    void DeleteOldLogs(const std::filesystem::path &log_dir, std::chrono::duration<Rep, Period> max_age)
-    {
+    void DeleteOldLogs(
+        const std::filesystem::path &log_dir, std::chrono::duration<Rep, Period> max_age
+    ) {
         const auto now = std::chrono::system_clock::now();
 
-        for (const auto &entry : std::filesystem::directory_iterator(log_dir))
-        {
-            if (!entry.is_regular_file())
-                continue;
+        for (const auto &entry : std::filesystem::directory_iterator(log_dir)) {
+            if (!entry.is_regular_file()) continue;
 
-            if (entry.path().extension() != ".log")
-                continue;
+            if (entry.path().extension() != ".log") continue;
 
             auto ftime = entry.last_write_time();
 
             auto sctp = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
-                ftime - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now());
+                ftime - std::filesystem::file_time_type::clock::now() +
+                std::chrono::system_clock::now()
+            );
 
-            if (now - sctp > max_age)
-            {
+            if (now - sctp > max_age) {
                 std::filesystem::remove(entry.path());
             }
         }
     }
-}
+}  // namespace
 
-namespace app_logger
-{
-    void InitLogger()
-    {
-
-        try
-        {
+namespace app_logger {
+    void InitLogger() {
+        try {
             // Create logs directory if it doesn't exist
-            if (!std::filesystem::exists("logs"))
-            {
+            if (!std::filesystem::exists("logs")) {
                 std::filesystem::create_directory("logs");
             }
 
             // Delete old logs
 #ifndef NDEBUG
-            DeleteOldLogs("logs", std::chrono::hours(1)); // 1 hour for debug builds
+            DeleteOldLogs("logs", std::chrono::hours(1));  // 1 hour for debug builds
 #else
-            DeleteOldLogs("logs", std::chrono::hours(24 * 7)); // 7 days for release builds
+            DeleteOldLogs("logs",
+                          std::chrono::hours(24 * 7));  // 7 days for release builds
 #endif
             // Get current timestamp for log file name
             std::string log_filename = "logs/log_" + GetCurrentTimestamp() + ".log";
             // Setup sinks (Console + Dynamic File)
             std::vector<spdlog::sink_ptr> sinks;
-            auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_filename, true);
+            auto file_sink =
+                std::make_shared<spdlog::sinks::basic_file_sink_mt>(log_filename, true);
             file_sink->set_level(spdlog::level::trace);
             sinks.push_back(file_sink);
 #ifndef NDEBUG
@@ -94,24 +88,19 @@ namespace app_logger
             logger->set_level(spdlog::level::trace);
             spdlog::register_logger(logger);
             spdlog::set_default_logger(logger);
-            // Flush every 10 seconds so logs appear in the file while the app is running
+            // Flush every 10 seconds so logs appear in the file while the app is
+            // running
             spdlog::flush_every(std::chrono::seconds(10));
             // Flush on Warning to ensure logs are saved if app crashes
             spdlog::flush_on(spdlog::level::warn);
 
             spdlog::info("Logger initialized.");
-        }
-        catch (const spdlog::spdlog_ex &e)
-        {
+        } catch (const spdlog::spdlog_ex &e) {
             throw std::runtime_error(std::string("spdlog initialization failed: ") + e.what());
-        }
-        catch (const std::filesystem::filesystem_error &e)
-        {
+        } catch (const std::filesystem::filesystem_error &e) {
             throw std::runtime_error(std::string("Failed to create logs directory: ") + e.what());
-        }
-        catch (const std::exception &e)
-        {
+        } catch (const std::exception &e) {
             throw std::runtime_error(std::string("Failed to initialize logger: ") + e.what());
         }
     }
-} // namespace app_logger
+}  // namespace app_logger

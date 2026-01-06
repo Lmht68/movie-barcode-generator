@@ -1,6 +1,5 @@
 #pragma once
 
-namespace ResourcePath
-{
-    constexpr auto APP_ICON = ":/icons/app-icon.png";
+namespace ResourcePath {
+    constexpr auto kAppIcon = ":/icons/app-icon.png";
 }

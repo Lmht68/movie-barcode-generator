@@ -1,21 +1,18 @@
+#include "gui/main_window.h"
 #include "utils/logger.h"
-#include "gui/mainwindow.h"
 
-#include <opencv2/opencv.hpp>
 #include <QApplication>
 #include <QMessageBox>
+#include <opencv2/opencv.hpp>
 
-#include <iostream>
 #include <filesystem>
+#include <iostream>
 
-int main(int argc, char *argv[])
-{
-    try
-    {
+int main(int argc, char *argv[]) {
+    try {
         QApplication app(argc, argv);
 
-        try
-        {
+        try {
             // Initialize spdlog
             app_logger::InitLogger();
             spdlog::info("Movie Barcode Generator starting...");
@@ -25,18 +22,12 @@ int main(int argc, char *argv[])
             main_window.show();
 
             return app.exec();
-        }
-        catch (const std::runtime_error &e)
-        {
+        } catch (const std::runtime_error &e) {
             QMessageBox::critical(nullptr, "Logger Initialization Error.", e.what());
-        }
-        catch (const std::exception &e)
-        {
+        } catch (const std::exception &e) {
             QMessageBox::critical(nullptr, "Initialization Error.", e.what());
         }
-    }
-    catch (const std::exception &e)
-    {
+    } catch (const std::exception &e) {
         std::cerr << "CRITICAL FAILURE: Qt GUI Subsystem could not start." << std::endl;
         std::cerr << e.what() << std::endl;
         return 1;
