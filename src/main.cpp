@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QStyleFactory>
 #include <opencv2/opencv.hpp>
 
 #include <filesystem>
@@ -10,14 +11,17 @@
 
 int main(int argc, char *argv[]) {
     try {
+        // Forces Qt to read and use system palette on Windows
+        qputenv("QT_QPA_PLATFORM", "windows:darkmode=2");
         QApplication app(argc, argv);
 
         try {
-            // Initialize spdlog
+            // Init spdlog
             app_logger::InitLogger();
             spdlog::info("Movie Barcode Generator starting...");
-
-            // Initialize and show main window
+            // Init app style
+            app.setStyle(QStyleFactory::create("fusion"));
+            // Init and show main window
             MainWindow main_window;
             main_window.show();
 
