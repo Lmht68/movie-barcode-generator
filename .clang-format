@@ -59,7 +59,7 @@ AlignConsecutiveTableGenDefinitionColons:
   AlignFunctionPointers: false
   PadOperators: false
 AlignEscapedNewlines: Left
-AlignOperands: Align
+AlignOperands: DontAlign
 AlignTrailingComments:
   Kind: Always
   OverEmptyLines: 0
@@ -291,7 +291,7 @@ StatementMacros:
   - QT_REQUIRE_VERSION
 TableGenBreakInsideDAGArg: DontBreak
 TabWidth: 4
-UseTab: Never
+UseTab: Always
 VerilogBreakBetweenInstancePorts: true
 WhitespaceSensitiveMacros:
   - BOOST_PP_STRINGIZE
