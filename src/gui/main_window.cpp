@@ -6,6 +6,10 @@
 #include <QScreen>
 
 MainWindow::MainWindow() {
+    // Set up central widget and dock widgets
+    central_widget_ = new CentralWidget(this);
+    setCentralWidget(central_widget_);
+
     setWindowTitle(WINDOW_TITLE);
     setWindowIcon(QIcon(ResourcePath::kAppIcon));
     resize(1280, 720);

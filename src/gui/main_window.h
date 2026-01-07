@@ -1,5 +1,7 @@
 #pragma once
 
+#include "central_widget.h"
+
 #include <QMainWindow>
 
 class MainWindow : public QMainWindow {
@@ -7,4 +9,7 @@ class MainWindow : public QMainWindow {
 
 public:
     explicit MainWindow();
+
+private:
+    CentralWidget *central_widget_;
 };

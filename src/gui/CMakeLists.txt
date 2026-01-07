@@ -1,9 +1,13 @@
 add_library(app_gui STATIC
     # Headers
     main_window.h
+    central_widget.h
+    barcode_view.h
 
     # Sources
     main_window.cpp
+    central_widget.cpp
+    barcode_view.cpp
 )
 
 target_include_directories(app_gui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
