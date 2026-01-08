@@ -10,3 +10,6 @@ build/
 # Data & log files
 data/
 logs/
+
+# AI
+GEMINI.md
