@@ -25,5 +25,7 @@ add_subdirectory(src)
 if (WIN32)
     target_sources(${APP_TARGET} PRIVATE
         ${CMAKE_SOURCE_DIR}/res/res.rc
+        ${CMAKE_SOURCE_DIR}/res/style/light/lightstyle.qrc
+        ${CMAKE_SOURCE_DIR}/res/style/dark/darkstyle.qrc
     )
 endif()

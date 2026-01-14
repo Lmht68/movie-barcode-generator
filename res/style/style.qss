@@ -1,0 +1,3 @@
+QDockWidget QLabel#dockTitle {
+    font-weight: bold;
+}
