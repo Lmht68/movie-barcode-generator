@@ -1,6 +1,7 @@
 #pragma once
 
 #include "central_widget.h"
+#include "file_browser_dock.h"
 
 #include <QMainWindow>
 
@@ -14,6 +15,7 @@ public:
 
 private:
     CentralWidget* central_widget_;
+    FileBrowserDock* file_browser_dock_;
     QAction* action_import_media_file_;
     QAction* action_import_media_folder_;
     QAction* action_export_barcode_image_;

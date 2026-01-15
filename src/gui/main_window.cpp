@@ -19,9 +19,15 @@ MainWindow::MainWindow() : QMainWindow(nullptr) {
     central_widget_ = new CentralWidget(this);
     setCentralWidget(central_widget_);
 
+    file_browser_dock_ = new FileBrowserDock(this);
+    file_browser_dock_->setFeatures(
+        QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable
+    );
+    addDockWidget(Qt::LeftDockWidgetArea, file_browser_dock_);
+
     setWindowTitle(WINDOW_TITLE);
     setWindowIcon(QIcon(ResourcePath::kAppIcon));
-    resize(1280, 720);
+    resize(1600, 900);
     // Center the window on the primary screen
     move(QGuiApplication::primaryScreen()->availableGeometry().center() - this->rect().center());
 }
