@@ -18,7 +18,6 @@ public:
     void ClearFolder();
 
 signals:
-    void RequestOpenFile();
     void RequestOpenFolder();
     void FileSelected(const QString &file_path);
 

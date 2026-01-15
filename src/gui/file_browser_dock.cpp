@@ -40,7 +40,6 @@ FileBrowserDock::FileBrowserDock(QWidget *parent)
     layout->addStretch();
     widget_stacked_->addWidget(widget_placeholder);
 
-    connect(btn_open_file_, &QPushButton::clicked, this, &FileBrowserDock::RequestOpenFile);
     connect(btn_open_folder_, &QPushButton::clicked, this, &FileBrowserDock::RequestOpenFolder);
 
     model_file_system_->setRootPath(QString());

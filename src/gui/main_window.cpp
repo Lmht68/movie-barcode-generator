@@ -36,29 +36,26 @@ void MainWindow::InitMenuBar() {
     // File menu
     QMenu* menu_file = menuBar()->addMenu(tr("&File"));
 
-    action_import_media_file_ = new QAction(tr("Import Media File…"), this);
     action_import_media_folder_ = new QAction(tr("Import Media Folder…"), this);
     action_export_barcode_image_ = new QAction(tr("Export Barcode Image…"), this);
-    action_import_metadata_ = new QAction(tr("Import Metadata…"), this);
-    action_export_metadata_ = new QAction(tr("Export Metadata…"), this);
-    action_save_metadata_ = new QAction(tr("Save Metadata"), this);
+    action_import_preset_ = new QAction(tr("Import Preset…"), this);
+    action_export_preset_ = new QAction(tr("Export Preset…"), this);
+    action_save_preset_ = new QAction(tr("Save Preset"), this);
 
-    connect(action_import_media_file_, &QAction::triggered, this, &MainWindow::ImportMediaFile);
     connect(action_import_media_folder_, &QAction::triggered, this, &MainWindow::ImportMediaFolder);
     connect(
         action_export_barcode_image_, &QAction::triggered, this, &MainWindow::ExportBarcodeImage
     );
-    connect(action_import_metadata_, &QAction::triggered, this, &MainWindow::ImportMetadata);
-    connect(action_export_metadata_, &QAction::triggered, this, &MainWindow::ExportMetadata);
-    connect(action_save_metadata_, &QAction::triggered, this, &MainWindow::SaveMetadata);
+    connect(action_import_preset_, &QAction::triggered, this, &MainWindow::ImportPreset);
+    connect(action_export_preset_, &QAction::triggered, this, &MainWindow::ExportPreset);
+    connect(action_save_preset_, &QAction::triggered, this, &MainWindow::SavePreset);
 
-    menu_file->addAction(action_import_media_file_);
     menu_file->addAction(action_import_media_folder_);
     menu_file->addAction(action_export_barcode_image_);
     menu_file->addSeparator();
-    menu_file->addAction(action_import_metadata_);
-    menu_file->addAction(action_export_metadata_);
-    menu_file->addAction(action_save_metadata_);
+    menu_file->addAction(action_import_preset_);
+    menu_file->addAction(action_export_preset_);
+    menu_file->addAction(action_save_preset_);
 
     // Help menu
     QMenu* help_menu = menuBar()->addMenu(tr("&Help"));
@@ -98,9 +95,9 @@ void MainWindow::ExportBarcodeImage() {
     // TODO:
 }
 
-void MainWindow::ImportMetadata() {
+void MainWindow::ImportPreset() {
     const QString file = QFileDialog::getOpenFileName(
-        this, tr("Import Metadata"), QString(), tr("Metadata Files (*.json)")
+        this, tr("Import Preset"), QString(), tr("Preset Files (*.json)")
     );
 
     if (file.isEmpty()) return;
@@ -108,16 +105,16 @@ void MainWindow::ImportMetadata() {
     // TODO:
 }
 
-void MainWindow::ExportMetadata() {
+void MainWindow::ExportPreset() {
     const QString file =
-        QFileDialog::getSaveFileName(this, tr("Export Metadata"), QString(), tr("JSON (*.json)"));
+        QFileDialog::getSaveFileName(this, tr("Export Preset"), QString(), tr("JSON (*.json)"));
 
     if (file.isEmpty()) return;
 
     // TODO:
 }
 
-void MainWindow::SaveMetadata() {
+void MainWindow::SavePreset() {
     // TODO:
 }
 
