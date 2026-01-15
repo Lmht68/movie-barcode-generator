@@ -27,7 +27,6 @@ private slots:
 private:
     QStackedWidget *widget_stacked_;
     QPushButton *btn_open_folder_;
-    QPushButton *btn_open_file_;
     QTreeView *view_tree_;
     QFileSystemModel *model_file_system_;
 };

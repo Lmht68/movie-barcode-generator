@@ -18,7 +18,6 @@ namespace {
 FileBrowserDock::FileBrowserDock(QWidget *parent)
     : QDockWidget(tr("EXPLORER"), parent),
       widget_stacked_(new QStackedWidget(this)),
-      btn_open_file_(new QPushButton(tr("Open File"), this)),
       btn_open_folder_(new QPushButton(tr("Open Folder"), this)),
       view_tree_(new QTreeView(this)),
       model_file_system_(new QFileSystemModel(this)) {
@@ -31,11 +30,9 @@ FileBrowserDock::FileBrowserDock(QWidget *parent)
 
     auto *widget_placeholder = new QWidget(widget_stacked_);
     auto *layout = new QVBoxLayout(widget_placeholder);
-    btn_open_file_->setObjectName("btnSelectFile");
-    btn_open_folder_->setObjectName("btnSelectFile");
-    btn_open_file_->setMaximumWidth(300);
+    btn_open_folder_->setObjectName("btnSelectFolder");
     btn_open_folder_->setMaximumWidth(300);
-    layout->addWidget(btn_open_file_);
+    layout->addWidget(new QLabel(tr("You have not yet opened a media folder."), this));
     layout->addWidget(btn_open_folder_);
     layout->addStretch();
     widget_stacked_->addWidget(widget_placeholder);

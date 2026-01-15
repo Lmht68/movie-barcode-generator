@@ -2,6 +2,6 @@ QDockWidget QLabel#dockTitle {
     font-weight: bold;
 }
 
-QDockWidget QPushButton#btnSelectFile {
+QDockWidget QPushButton#btnSelectFolder {
     padding: 6px;
 }
