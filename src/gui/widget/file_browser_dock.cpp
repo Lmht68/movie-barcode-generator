@@ -1,7 +1,7 @@
 #include "file_browser_dock.h"
-#include "file_browser_model.h"
-#include "media_filter_proxy.h"
 
+#include "../model/file_browser_model.h"
+#include "../model/media_filter_proxy.h"
 #include "../utils/constants.h"
 
 #include <QFileIconProvider>

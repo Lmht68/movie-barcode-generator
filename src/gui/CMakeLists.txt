@@ -1,19 +1,19 @@
 add_library(app_gui STATIC
     # Headers
     main_window.h
-    central_widget.h
-    barcode_view.h
-    file_browser_dock.h
-    file_browser_model.h
-    media_filter_proxy.h
+    widget/central_widget.h
+    widget/file_browser_dock.h
+    view/barcode_view.h
+    model/file_browser_model.h
+    model/media_filter_proxy.h
 
     # Sources
     main_window.cpp
-    central_widget.cpp
-    barcode_view.cpp
-    file_browser_dock.cpp
-    file_browser_model.cpp
-    media_filter_proxy.cpp
+    widget/central_widget.cpp
+    widget/file_browser_dock.cpp
+    view/barcode_view.cpp
+    model/file_browser_model.cpp
+    model/media_filter_proxy.cpp
 )
 
 target_include_directories(app_gui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
