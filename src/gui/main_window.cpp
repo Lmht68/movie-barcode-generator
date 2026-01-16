@@ -1,7 +1,7 @@
-#include "main_window.h"
+#include "gui/main_window.h"
 
-#include "../utils/constants.h"
-#include "../utils/logger.h"
+#include "utils/constants.h"
+#include "utils/logger.h"
 
 #include <QAction>
 #include <QDesktopServices>

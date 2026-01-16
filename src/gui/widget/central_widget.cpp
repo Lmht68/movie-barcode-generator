@@ -1,6 +1,6 @@
-#include "central_widget.h"
+#include "gui/widget/central_widget.h"
 
-#include "../view/barcode_view.h"
+#include "gui/view/barcode_view.h"
 
 #include <QSplitter>
 #include <QVBoxLayout>

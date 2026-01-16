@@ -1,4 +1,4 @@
-#include "file_browser_model.h"
+#include "gui/model/file_browser_model.h"
 
 #include <QFileIconProvider>
 

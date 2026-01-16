@@ -16,7 +16,7 @@ add_library(app_gui STATIC
     model/media_filter_proxy.cpp
 )
 
-target_include_directories(app_gui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(app_gui PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 target_link_libraries(app_gui PUBLIC 
     app_utils

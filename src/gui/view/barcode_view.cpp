@@ -1,4 +1,4 @@
-#include "barcode_view.h"
+#include "gui/view/barcode_view.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>

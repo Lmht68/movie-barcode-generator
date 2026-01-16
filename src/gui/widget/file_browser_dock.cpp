@@ -1,8 +1,8 @@
-#include "file_browser_dock.h"
+#include "gui/widget/file_browser_dock.h"
 
-#include "../model/file_browser_model.h"
-#include "../model/media_filter_proxy.h"
-#include "../utils/constants.h"
+#include "gui/model/file_browser_model.h"
+#include "gui/model/media_filter_proxy.h"
+#include "utils/constants.h"
 
 #include <QFileIconProvider>
 #include <QLabel>
@@ -23,7 +23,7 @@ FileBrowserDock::FileBrowserDock(QWidget *parent)
     setAllowedAreas(Qt::LeftDockWidgetArea);
     auto *dock_title_label = new QLabel(tr("EXPLORER"), this);
     dock_title_label->setObjectName("dockTitle");
-    dock_title_label->setContentsMargins(8, 8, 0, 0);
+    dock_title_label->setContentsMargins(8, 4, 0, 0);
     dock_title_label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     setTitleBarWidget(dock_title_label);
 

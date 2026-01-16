@@ -1,6 +1,6 @@
-#include "media_filter_proxy.h"
+#include "gui/model/media_filter_proxy.h"
 
-#include "../utils/constants.h"
+#include "utils/constants.h"
 
 MediaFilterProxy::MediaFilterProxy(QObject *parent) : QSortFilterProxyModel(parent) {}
 

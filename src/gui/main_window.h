@@ -1,7 +1,7 @@
 #pragma once
 
-#include "widget/central_widget.h"
-#include "widget/file_browser_dock.h"
+#include "gui/widget/central_widget.h"
+#include "gui/widget/file_browser_dock.h"
 
 #include <QMainWindow>
 
