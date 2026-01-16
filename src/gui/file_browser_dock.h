@@ -2,11 +2,14 @@
 
 #include <QDockWidget>
 
+class FileBrowserModel;
+class MediaFilterProxy;
+
 class QTreeView;
-class QFileSystemModel;
 class QStackedWidget;
 class QPushButton;
 class QModelIndex;
+class QLabel;
 
 class FileBrowserDock : public QDockWidget {
     Q_OBJECT
@@ -25,8 +28,11 @@ private slots:
     void OnItemClicked(const QModelIndex &index);
 
 private:
+    FileBrowserModel *model_file_system_;
+    MediaFilterProxy *media_proxy_model_;
+
     QStackedWidget *widget_stacked_;
     QPushButton *btn_open_folder_;
     QTreeView *view_tree_;
-    QFileSystemModel *model_file_system_;
+    QLabel *label_root_;
 };

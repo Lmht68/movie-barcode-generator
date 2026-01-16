@@ -1,5 +1,10 @@
 QDockWidget QLabel#dockTitle {
     font-weight: bold;
+    font-style: italic;
+}
+
+QDockWidget QLabel#fsTreeRoot {
+    font-weight: bold;
 }
 
 QDockWidget QPushButton#btnSelectFolder {

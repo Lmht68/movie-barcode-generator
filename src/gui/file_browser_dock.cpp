@@ -1,6 +1,10 @@
 #include "file_browser_dock.h"
+#include "file_browser_model.h"
+#include "media_filter_proxy.h"
 
-#include <QFileSystemModel>
+#include "../utils/constants.h"
+
+#include <QFileIconProvider>
 #include <QLabel>
 #include <QModelIndex>
 #include <QPushButton>
@@ -8,19 +12,14 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-namespace {
-    bool IsVideoFile(const QFileInfo &file_info) {
-        static const QStringList video_extensions = {"mp4", "avi", "mkv", "mov"};
-        return video_extensions.contains(file_info.suffix().toLower());
-    }
-}  // namespace
-
 FileBrowserDock::FileBrowserDock(QWidget *parent)
     : QDockWidget(tr("EXPLORER"), parent),
       widget_stacked_(new QStackedWidget(this)),
       btn_open_folder_(new QPushButton(tr("Open Folder"), this)),
       view_tree_(new QTreeView(this)),
-      model_file_system_(new QFileSystemModel(this)) {
+      model_file_system_(new FileBrowserModel(this)),
+      media_proxy_model_(new MediaFilterProxy(this)),
+      label_root_(new QLabel("", this)) {
     setAllowedAreas(Qt::LeftDockWidgetArea);
     auto *dock_title_label = new QLabel(tr("EXPLORER"), this);
     dock_title_label->setObjectName("dockTitle");
@@ -39,9 +38,24 @@ FileBrowserDock::FileBrowserDock(QWidget *parent)
 
     connect(btn_open_folder_, &QPushButton::clicked, this, &FileBrowserDock::RequestOpenFolder);
 
-    model_file_system_->setRootPath(QString());
-    view_tree_->setModel(model_file_system_);
-    widget_stacked_->addWidget(view_tree_);
+    auto *widget_fs_tree = new QWidget(this);
+    auto *layout_fs_tree = new QVBoxLayout(widget_fs_tree);
+    auto *widget_fs_header = new QWidget(this);
+    auto *layout_fs_header = new QHBoxLayout(widget_fs_header);
+    layout_fs_header->setContentsMargins(0, 0, 0, 0);
+    layout_fs_header->setSpacing(1);
+    layout_fs_header->setAlignment(Qt::AlignLeft);
+    auto *label_root_icon = new QLabel(this);
+    label_root_icon->setPixmap(QFileIconProvider().icon(QFileIconProvider::Folder).pixmap(16, 16));
+    label_root_->setObjectName("fsTreeRoot");
+    layout_fs_header->addWidget(label_root_icon);
+    layout_fs_header->addWidget(label_root_);
+    layout_fs_tree->addWidget(widget_fs_header);
+    layout_fs_tree->addWidget(view_tree_);
+    widget_stacked_->addWidget(widget_fs_tree);
+
+    media_proxy_model_->setSourceModel(model_file_system_);
+    view_tree_->setModel(media_proxy_model_);
     view_tree_->setHeaderHidden(true);
     view_tree_->setIndentation(14);
     view_tree_->setUniformRowHeights(true);
@@ -62,13 +76,20 @@ void FileBrowserDock::OpenFolder(const QString &path) {
 
     QFileInfo info(path);
     QString root_path = info.isDir() ? info.absoluteFilePath() : info.absolutePath();
+    QString folder_name = info.isDir() ? info.fileName() : info.dir().dirName();
+    label_root_->setText(folder_name.toUpper());
+    label_root_->setToolTip(QDir::toNativeSeparators(root_path));
 
-    QModelIndex root_index = model_file_system_->index(root_path);
+    model_file_system_->setRootPath(root_path);
+    QModelIndex source_root_index = model_file_system_->index(root_path);
 
-    if (!root_index.isValid()) return;
+    if (!source_root_index.isValid()) return;
 
-    view_tree_->setRootIndex(root_index);
-    view_tree_->expand(root_index);
+    QModelIndex proxy_root_index = media_proxy_model_->mapFromSource(source_root_index);
+
+    view_tree_->setRootIndex(proxy_root_index);
+    view_tree_->expand(proxy_root_index);
+
     widget_stacked_->setCurrentIndex(1);
 }
 
@@ -78,7 +99,10 @@ void FileBrowserDock::ClearFolder() {
 }
 
 void FileBrowserDock::OnItemClicked(const QModelIndex &index) {
-    QFileInfo info = model_file_system_->fileInfo(index);
+    QModelIndex source_index = media_proxy_model_->mapToSource(index);
+    QFileInfo info = model_file_system_->fileInfo(source_index);
 
-    if (info.isFile() && IsVideoFile(info)) emit FileSelected(info.absoluteFilePath());
+    if (info.isFile() && MediaFormat::isMedia(info.suffix())) {
+        emit FileSelected(info.absoluteFilePath());
+    }
 }

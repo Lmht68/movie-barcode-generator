@@ -1,6 +1,7 @@
 #include "main_window.h"
 
 #include "../utils/constants.h"
+#include "../utils/logger.h"
 
 #include <QAction>
 #include <QDesktopServices>
@@ -13,17 +14,9 @@
 #include <QUrl>
 
 MainWindow::MainWindow() : QMainWindow(nullptr) {
-    // Set up menu bar
     InitMenuBar();
-    // Set up central widget and dock widgets
-    central_widget_ = new CentralWidget(this);
-    setCentralWidget(central_widget_);
-
-    file_browser_dock_ = new FileBrowserDock(this);
-    file_browser_dock_->setFeatures(
-        QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable
-    );
-    addDockWidget(Qt::LeftDockWidgetArea, file_browser_dock_);
+    InitCentralWidget();
+    InitFileBrowserDockWidget();
 
     setWindowTitle(WINDOW_TITLE);
     setWindowIcon(QIcon(ResourcePath::kAppIcon));
@@ -65,24 +58,34 @@ void MainWindow::InitMenuBar() {
     help_menu->addAction(action_open_about_dialog_);
 }
 
-// ===== Slots =====
-
-void MainWindow::ImportMediaFile() {
-    const QString file = QFileDialog::getOpenFileName(
-        this, tr("Import Media File"), QString(), tr("Video Files (*.mp4 *.mkv *.avi *.mov)")
+void MainWindow::InitFileBrowserDockWidget() {
+    file_browser_dock_ = new FileBrowserDock(this);
+    file_browser_dock_->setFeatures(
+        QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable
     );
 
-    if (file.isEmpty()) return;
+    connect(
+        file_browser_dock_, &FileBrowserDock::RequestOpenFolder, this,
+        &MainWindow::ImportMediaFolder
+    );
+    connect(
+        file_browser_dock_, &FileBrowserDock::FileSelected, this, &MainWindow::DisplayImageFile
+    );
 
-    // TODO:
+    addDockWidget(Qt::LeftDockWidgetArea, file_browser_dock_);
 }
+
+void MainWindow::InitCentralWidget() {
+    central_widget_ = new CentralWidget(this);
+    setCentralWidget(central_widget_);
+}
+
+// ===== Slots =====
 
 void MainWindow::ImportMediaFolder() {
     const QString folder = QFileDialog::getExistingDirectory(this, tr("Import Media Folder"));
-
     if (folder.isEmpty()) return;
-
-    // TODO:
+    file_browser_dock_->OpenFolder(folder);
 }
 
 void MainWindow::ExportBarcodeImage() {
@@ -127,4 +130,9 @@ void MainWindow::OpenAboutDialog() {
            "GitHub Repository</a>")
             .arg(WINDOW_TITLE)
     );
+}
+
+void MainWindow::DisplayImageFile(const QString& file_path) {
+    // TODO:
+    spdlog::info("Displaying image file: {}", file_path.toStdString());
 }
