@@ -1,5 +1,6 @@
 #include "gui/main_window.h"
 #include "utils/constants.h"
+#include "utils/exceptions.h"
 #include "utils/logger.h"
 
 #include <QApplication>
@@ -26,15 +27,21 @@ namespace {
         QFile file_main(ResourcePath::kAppStyle);
         QString css_theme, css_main;
 
-        if (file_theme.open(QFile::ReadOnly | QFile::Text)) {
-            css_theme = QTextStream(&file_theme).readAll();
-            file_theme.close();
+        if (!file_theme.open(QFile::ReadOnly | QFile::Text)) {
+            throw AppException::StyleInitException(
+                "Theme CSS file missing: " + file_theme.fileName().toStdString()
+            );
         }
+        css_theme = QTextStream(&file_theme).readAll();
+        file_theme.close();
 
-        if (file_main.open(QFile::ReadOnly | QFile::Text)) {
-            css_main = QTextStream(&file_main).readAll();
-            file_main.close();
+        if (!file_main.open(QFile::ReadOnly | QFile::Text)) {
+            throw AppException::StyleInitException(
+                "App CSS file missing: " + file_main.fileName().toStdString()
+            );
         }
+        css_main = QTextStream(&file_main).readAll();
+        file_main.close();
 
         app->setStyleSheet(css_theme + css_main);
         // Windows-specific Title Bar fix
@@ -58,6 +65,11 @@ int main(int argc, char *argv[]) {
     try {
         // Forces Qt to read and use system palette on Windows
         // qputenv("QT_QPA_PLATFORM", "windows:darkmode=2");
+        // Tell Qt to handle scaling, not the OS
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        // Ensure pixmaps use the high-res versions
+        QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+        // Init app object
         QApplication app(argc, argv);
 
         try {
@@ -84,11 +96,16 @@ int main(int argc, char *argv[]) {
             main_window.show();
 
             return app.exec();
-        } catch (const std::runtime_error &e) {
+        } catch (const AppException::LoggerInitException &e) {
             QMessageBox::critical(
                 nullptr, "Logger Initialization Error.", "Cannot initialize logger."
             );
             std::cerr << e.what() << std::endl;
+        } catch (const AppException::StyleInitException &e) {
+            QMessageBox::critical(
+                nullptr, "Styling Initialization Error.", "Cannot initialize style sheets."
+            );
+            spdlog::error("UI Styling Failed: {}", e.what());
         } catch (const std::exception &e) {
             QMessageBox::critical(
                 nullptr, "Initialization Error.", "Cannot initialize application."

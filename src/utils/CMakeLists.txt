@@ -4,6 +4,7 @@ target_sources(app_utils PRIVATE
     # Headers
     constants.h
     logger.h
+    exceptions.h
 
     # Sources
     logger.cpp

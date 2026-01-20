@@ -3,6 +3,7 @@
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/spdlog.h"
+#include "utils/exceptions.h"
 
 #include <chrono>
 #include <ctime>
@@ -96,11 +97,17 @@ namespace app_logger {
 
             spdlog::info("Logger initialized.");
         } catch (const spdlog::spdlog_ex &e) {
-            throw std::runtime_error(std::string("spdlog initialization failed: ") + e.what());
+            throw AppException::LoggerInitException(
+                std::string("spdlog initialization failed: ") + e.what()
+            );
         } catch (const std::filesystem::filesystem_error &e) {
-            throw std::runtime_error(std::string("Failed to create logs directory: ") + e.what());
+            throw AppException::LoggerInitException(
+                std::string("Failed to create logs directory: ") + e.what()
+            );
         } catch (const std::exception &e) {
-            throw std::runtime_error(std::string("Failed to initialize logger: ") + e.what());
+            throw AppException::LoggerInitException(
+                std::string("Failed to initialize logger: ") + e.what()
+            );
         }
     }
 }  // namespace app_logger
