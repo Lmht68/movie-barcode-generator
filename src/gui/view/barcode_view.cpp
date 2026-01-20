@@ -22,6 +22,8 @@ BarcodeView::BarcodeView(QWidget *parent)
     setDragMode(QGraphicsView::ScrollHandDrag);
     setBackgroundBrush(DisplayConfig::kBackgroundCanvasColor);
     setFrameStyle(QFrame::NoFrame);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     // Disable built-in anchors to handle manual high-quality re-centering math
     setTransformationAnchor(QGraphicsView::NoAnchor);
     // Setup debounce timer
@@ -67,7 +69,6 @@ void BarcodeView::wheelEvent(QWheelEvent *event) {
     // Manual anchor math, adjust scrollbars to keep point under mouse stationary
     const QPointF scene_pt_after = mapToScene(view_pt.toPoint());
     const QPointF delta = scene_pt_after - scene_pt_before;
-
     // Apply delta weighted by the current transformation matrix
     horizontalScrollBar()->setValue(
         qRound(horizontalScrollBar()->value() - delta.x() * transform().m11())
@@ -75,7 +76,6 @@ void BarcodeView::wheelEvent(QWheelEvent *event) {
     verticalScrollBar()->setValue(
         qRound(verticalScrollBar()->value() - delta.y() * transform().m22())
     );
-
     // Restart debounce timer for the high-quality CPU redraw
     timer_zoom_->start(DisplayConfig::kZoomDebounceMs);
     event->accept();
