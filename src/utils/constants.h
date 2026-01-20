@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QColor>
 #include <QLatin1String>
 
 namespace ResourcePath {
@@ -24,3 +25,13 @@ namespace MediaFormat {
         return false;
     }
 }  // namespace MediaFormat
+
+namespace DisplayConfig {
+    constexpr double kZoomStep = 1.15;
+    constexpr double kMinScaleLimit = 0.01;
+    constexpr double kDefaultScale = 1.0;
+    constexpr double kFallbackScale = 0.1;
+    constexpr int kZoomDebounceMs = 150;
+    constexpr double kDefaultRelativePos = 0.5;
+    const QColor kBackgroundCanvasColor(30, 30, 30);
+}  // namespace DisplayConfig

@@ -10,8 +10,9 @@ class CentralWidget : public QWidget {
 
 public:
     CentralWidget(QWidget *parent = nullptr);
+    void DisplayBarcode(const QPixmap &pixmap);
 
 private:
     QSplitter *splitter_widget_;
-    BarcodeView *barcode_view_;
+    BarcodeView *view_barcode_;
 };

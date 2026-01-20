@@ -133,6 +133,12 @@ void MainWindow::OpenAboutDialog() {
 }
 
 void MainWindow::DisplayImageFile(const QString& file_path) {
-    // TODO:
-    spdlog::info("Displaying image file: {}", file_path.toStdString());
+    QPixmap pixmap(file_path);
+
+    if (pixmap.isNull()) {
+        spdlog::warn("Failed to load image from: {}", file_path.toStdString());
+        return;
+    }
+
+    central_widget_->DisplayBarcode(pixmap);
 }

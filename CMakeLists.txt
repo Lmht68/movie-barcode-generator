@@ -15,7 +15,7 @@ set(CMAKE_AUTOUIC ON)
 
 # Find required packages
 find_package(spdlog CONFIG REQUIRED)
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Gui OpenGLWidgets)
 find_package(OpenCV REQUIRED)
 
 # Include source directory

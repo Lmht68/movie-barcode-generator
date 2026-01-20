@@ -21,6 +21,8 @@ target_include_directories(app_gui PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/..")
 target_link_libraries(app_gui PUBLIC 
     app_utils
     Qt::Widgets
+    Qt::Gui
+    Qt::OpenGLWidgets
 )
 
 # App related definitions

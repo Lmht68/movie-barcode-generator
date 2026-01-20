@@ -11,6 +11,8 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent) {
     // Init central widget components
     splitter_widget_ = new QSplitter(Qt::Vertical, this);
     layout()->addWidget(splitter_widget_);
-    barcode_view_ = new BarcodeView(this);
-    splitter_widget_->addWidget(barcode_view_);
+    view_barcode_ = new BarcodeView(this);
+    splitter_widget_->addWidget(view_barcode_);
 }
+
+void CentralWidget::DisplayBarcode(const QPixmap &pixmap) { view_barcode_->DisplayImage(pixmap); }
