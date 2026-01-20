@@ -18,7 +18,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr) {
     InitCentralWidget();
     InitFileBrowserDockWidget();
 
-    setWindowTitle(WINDOW_TITLE);
+    setWindowTitle(APP_NAME);
     setWindowIcon(QIcon(ResourcePath::kAppIcon));
     resize(1600, 900);
     // Center the window on the primary screen
@@ -123,12 +123,12 @@ void MainWindow::SavePreset() {
 
 void MainWindow::OpenAboutDialog() {
     QMessageBox::about(
-        this, tr("About MovieBarcode"),
+        this, tr("About CineBar"),
         tr("<b>%1</b><br>"
            "Generate visual color barcodes from movies.<br><br>"
            "<a href='https://github.com/Lmht68/movie-barcode-generator'>"
            "GitHub Repository</a>")
-            .arg(WINDOW_TITLE)
+            .arg(APP_DETAIL)
     );
 }
 

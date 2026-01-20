@@ -26,4 +26,5 @@ target_link_libraries(app_gui PUBLIC
 )
 
 # App related definitions
-target_compile_definitions(app_gui PRIVATE WINDOW_TITLE="${APP_NAME} v${PROJECT_VERSION}")
+target_compile_definitions(app_gui PRIVATE APP_NAME="${APP_NAME}")
+target_compile_definitions(app_gui PRIVATE APP_DETAIL="${APP_NAME} v${PROJECT_VERSION}")

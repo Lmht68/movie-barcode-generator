@@ -3,7 +3,7 @@ project(movie-barcode-generator VERSION 0.1)
 
 # App related definitions
 set(APP_TARGET movie-barcode)   # internal
-set(APP_NAME "MovieBarcode")    # display
+set(APP_NAME "CineBar")    # display
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
