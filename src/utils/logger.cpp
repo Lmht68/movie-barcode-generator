@@ -97,15 +97,15 @@ namespace app_logger {
 
             spdlog::info("Logger initialized.");
         } catch (const spdlog::spdlog_ex &e) {
-            throw AppException::LoggerInitException(
+            throw app_exception::LoggerInitException(
                 std::string("spdlog initialization failed: ") + e.what()
             );
         } catch (const std::filesystem::filesystem_error &e) {
-            throw AppException::LoggerInitException(
+            throw app_exception::LoggerInitException(
                 std::string("Failed to create logs directory: ") + e.what()
             );
         } catch (const std::exception &e) {
-            throw AppException::LoggerInitException(
+            throw app_exception::LoggerInitException(
                 std::string("Failed to initialize logger: ") + e.what()
             );
         }

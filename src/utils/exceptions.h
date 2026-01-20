@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace AppException {
+namespace app_exception {
     class LoggerInitException : public std::runtime_error {
     public:
         explicit LoggerInitException(const std::string& message) : std::runtime_error(message) {}
@@ -14,6 +14,6 @@ namespace AppException {
     public:
         explicit StyleInitException(const std::string& message) : std::runtime_error(message) {}
     };
-}  // namespace AppException
+}  // namespace app_exception
 
 #endif

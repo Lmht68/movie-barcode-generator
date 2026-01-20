@@ -102,7 +102,7 @@ void FileBrowserDock::OnItemClicked(const QModelIndex &index) {
     QModelIndex source_index = media_proxy_model_->mapToSource(index);
     QFileInfo info = model_file_system_->fileInfo(source_index);
 
-    if (info.isFile() && MediaFormat::isMedia(info.suffix())) {
+    if (info.isFile() && media_format::IsMedia(info.suffix())) {
         emit FileSelected(info.absoluteFilePath());
     }
 }

@@ -19,7 +19,7 @@ MainWindow::MainWindow() : QMainWindow(nullptr) {
     InitFileBrowserDockWidget();
 
     setWindowTitle(APP_NAME);
-    setWindowIcon(QIcon(ResourcePath::kAppIcon));
+    setWindowIcon(QIcon(resource_path::kAppIcon));
     resize(1600, 900);
     // Center the window on the primary screen
     move(QGuiApplication::primaryScreen()->availableGeometry().center() - this->rect().center());

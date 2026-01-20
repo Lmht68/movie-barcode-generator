@@ -14,13 +14,13 @@ BarcodeView::BarcodeView(QWidget *parent)
     : QGraphicsView(parent),
       scene_(new QGraphicsScene(this)),
       pixmap_item_(nullptr),
-      pixmap_scale_factor_(DisplayConfig::kDefaultScale) {
+      pixmap_scale_factor_(display_config::kDefaultScale) {
     setViewport(new QOpenGLWidget());
     setScene(scene_);
     // UI Setup
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
     setDragMode(QGraphicsView::ScrollHandDrag);
-    setBackgroundBrush(DisplayConfig::kBackgroundCanvasColor);
+    setBackgroundBrush(display_config::kBackgroundCanvasColor);
     setFrameStyle(QFrame::NoFrame);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -36,7 +36,7 @@ void BarcodeView::DisplayImage(const QPixmap &pixmap) {
     if (pixmap.isNull()) return;
 
     pixmap_src_ = pixmap;
-    pixmap_scale_factor_ = DisplayConfig::kDefaultScale;
+    pixmap_scale_factor_ = display_config::kDefaultScale;
 
     // Fit to view initially if possible
     if (!pixmap_src_.isNull() && viewport()->width() > 0) {
@@ -57,12 +57,12 @@ void BarcodeView::wheelEvent(QWheelEvent *event) {
 
     // Fast GPU Zoom (Stretches the current pixmap item texture)
     if (event->angleDelta().y() > 0) {
-        scale(DisplayConfig::kZoomStep, DisplayConfig::kZoomStep);
-        pixmap_scale_factor_ *= DisplayConfig::kZoomStep;
+        scale(display_config::kZoomStep, display_config::kZoomStep);
+        pixmap_scale_factor_ *= display_config::kZoomStep;
     } else {
-        if (transform().m11() > DisplayConfig::kMinScaleLimit) {
-            scale(1.0 / DisplayConfig::kZoomStep, 1.0 / DisplayConfig::kZoomStep);
-            pixmap_scale_factor_ /= DisplayConfig::kZoomStep;
+        if (transform().m11() > display_config::kMinScaleLimit) {
+            scale(1.0 / display_config::kZoomStep, 1.0 / display_config::kZoomStep);
+            pixmap_scale_factor_ /= display_config::kZoomStep;
         }
     }
 
@@ -77,7 +77,7 @@ void BarcodeView::wheelEvent(QWheelEvent *event) {
         qRound(verticalScrollBar()->value() - delta.y() * transform().m22())
     );
     // Restart debounce timer for the high-quality CPU redraw
-    timer_zoom_->start(DisplayConfig::kZoomDebounceMs);
+    timer_zoom_->start(display_config::kZoomDebounceMs);
     event->accept();
 }
 
@@ -87,8 +87,8 @@ void BarcodeView::UpdateHighQualityPixmap() {
     // Capture relative look-at point to maintain view focus after resample
     const double scene_w = scene_->width();
     const double scene_h = scene_->height();
-    double rel_x = DisplayConfig::kDefaultRelativePos;
-    double rel_y = DisplayConfig::kDefaultRelativePos;
+    double rel_x = display_config::kDefaultRelativePos;
+    double rel_y = display_config::kDefaultRelativePos;
 
     if (scene_w > 0 && scene_h > 0) {
         QPointF currentCenter = mapToScene(viewport()->rect().center());
@@ -98,7 +98,7 @@ void BarcodeView::UpdateHighQualityPixmap() {
 
     // Validate scale factor
     if (std::isnan(pixmap_scale_factor_) || pixmap_scale_factor_ <= 0) {
-        pixmap_scale_factor_ = DisplayConfig::kFallbackScale;
+        pixmap_scale_factor_ = display_config::kFallbackScale;
     }
 
     // High-Quality CPU Resample

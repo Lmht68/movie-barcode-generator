@@ -22,13 +22,13 @@
 namespace {
     void ApplyTheme(QApplication *app, Qt::ColorScheme scheme, QWidget *window = nullptr) {
         bool is_dark = (scheme == Qt::ColorScheme::Dark);
-        QString path_theme = is_dark ? ResourcePath::kAppStyleDark : ResourcePath::kAppStyleLight;
+        QString path_theme = is_dark ? resource_path::kAppStyleDark : resource_path::kAppStyleLight;
         QFile file_theme(path_theme);
-        QFile file_main(ResourcePath::kAppStyle);
+        QFile file_main(resource_path::kAppStyle);
         QString css_theme, css_main;
 
         if (!file_theme.open(QFile::ReadOnly | QFile::Text)) {
-            throw AppException::StyleInitException(
+            throw app_exception::StyleInitException(
                 "Theme CSS file missing: " + file_theme.fileName().toStdString()
             );
         }
@@ -36,7 +36,7 @@ namespace {
         file_theme.close();
 
         if (!file_main.open(QFile::ReadOnly | QFile::Text)) {
-            throw AppException::StyleInitException(
+            throw app_exception::StyleInitException(
                 "App CSS file missing: " + file_main.fileName().toStdString()
             );
         }
@@ -96,12 +96,12 @@ int main(int argc, char *argv[]) {
             main_window.show();
 
             return app.exec();
-        } catch (const AppException::LoggerInitException &e) {
+        } catch (const app_exception::LoggerInitException &e) {
             QMessageBox::critical(
                 nullptr, "Logger Initialization Error.", "Cannot initialize logger."
             );
             std::cerr << e.what() << std::endl;
-        } catch (const AppException::StyleInitException &e) {
+        } catch (const app_exception::StyleInitException &e) {
             QMessageBox::critical(
                 nullptr, "Styling Initialization Error.", "Cannot initialize style sheets."
             );

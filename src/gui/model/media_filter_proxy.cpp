@@ -20,5 +20,5 @@ void MediaFilterProxy::setSourceModel(QAbstractItemModel *sourceModel) {
         return true;
     }
 
-    return MediaFormat::isMedia(fs_model_->fileInfo(index).suffix());
+    return media_format::IsMedia(fs_model_->fileInfo(index).suffix());
 }
