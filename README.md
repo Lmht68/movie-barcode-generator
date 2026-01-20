@@ -1,6 +1,6 @@
 # CineBar
 
-**CineBar** is a **Movie Barcode Generator** — a Qt C++ desktop tool that generates visual barcodes from movies by sampling frames across the film’s duration.
+**CineBar** is a **Movie Barcode Generator** - a Qt C++ desktop tool that generates visual barcodes from movies by sampling frames across the film’s duration.
 
 ---
 
