@@ -66,13 +66,13 @@ void MainWindow::InitMenuBar() {
     });
 
     // Help menu
-    QMenu* help_menu = menuBar()->addMenu(tr("&Help"));
+    QMenu* menu_help = menuBar()->addMenu(tr("&Help"));
 
     action_open_about_dialog_ = new QAction(tr("About"), this);
     connect(action_open_about_dialog_, &QAction::triggered, this, &MainWindow::OpenAboutDialog);
 
-    help_menu->addAction(action_open_about_dialog_);
-    help_menu->addAction(tr("About &Qt"), this, &QApplication::aboutQt);
+    menu_help->addAction(action_open_about_dialog_);
+    menu_help->addAction(tr("About &Qt"), this, &QApplication::aboutQt);
 }
 
 void MainWindow::InitFileBrowserDockWidget() {
