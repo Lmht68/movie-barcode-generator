@@ -12,6 +12,33 @@ QDockWidget QPushButton#btnSelectFolder {
     padding: 6px;
 }
 
+QWidget#widgetViewInfo {
+    background-color: #303030;
+}
+
+QLabel#labelViewInfo {
+    background-color: #303030;
+    color: #EDEDED;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+QLabel#labelIcon {
+    background-color: transparent;
+    border: none;
+}
+
+QPushButton#btnViewInfo { 
+    background-color: #303030;
+    border: none;
+    padding: 3px;
+    border-radius: 4px;
+}
+
+QPushButton:hover#btnViewInfo { 
+    background-color: #3A3A3A;
+}
+
 QGraphicsView {
     background-color: #1E1E1E;
     border: none;

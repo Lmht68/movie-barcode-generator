@@ -3,5 +3,8 @@
   <qresource prefix="/">
     <file>icons/app-icon.png</file>
     <file>style/style.qss</file>
+    <file>icons/fit-to-screen.png</file>
+    <file>icons/dimension.png</file>
+    <file>icons/zoom.png</file>
   </qresource>
 </RCC>

@@ -3,7 +3,8 @@
 
 #include <QWidget>
 
-class QSplitter;
+class QLabel;
+class QPushButton;
 class BarcodeView;
 
 class CentralWidget : public QWidget {
@@ -12,10 +13,17 @@ class CentralWidget : public QWidget {
 public:
     CentralWidget(QWidget *parent = nullptr);
     void DisplayBarcode(const QPixmap &pixmap);
+    void UpdateImageInfo(double zoom_level, const QSize &image_size);
+
+private slots:
+    void OnFitToScreenClicked();
 
 private:
-    QSplitter *splitter_widget_;
     BarcodeView *view_barcode_;
+    QLabel *label_zoom_level_;
+    QLabel *label_image_dimension_;
+    QPushButton *btn_fit_to_screen_;
+    QWidget *widget_view_info_;
 };
 
 #endif

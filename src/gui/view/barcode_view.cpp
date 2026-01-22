@@ -14,7 +14,8 @@ BarcodeView::BarcodeView(QWidget *parent)
     : QGraphicsView(parent),
       scene_graphics_(new QGraphicsScene(this)),
       pixmap_item_(nullptr),
-      pixmap_scale_factor_(display_config::kDefaultScale) {
+      pixmap_scale_factor_(display_config::kDefaultScale),
+      initial_scale_factor_(display_config::kDefaultScale) {
     setViewport(new QOpenGLWidget());
     setScene(scene_graphics_);
     // UI Setup
@@ -36,15 +37,16 @@ void BarcodeView::DisplayImage(const QPixmap &pixmap) {
     if (pixmap.isNull()) return;
 
     pixmap_src_ = pixmap;
-    pixmap_scale_factor_ = display_config::kDefaultScale;
-
-    // Fit to view initially if possible
+    // Calculate initial scale factor to fit the image to the view
     if (!pixmap_src_.isNull() && viewport()->width() > 0) {
         double view_w = viewport()->width();
         double view_h = viewport()->height();
-        pixmap_scale_factor_ = qMin(view_w / pixmap_src_.width(), view_h / pixmap_src_.height());
+        initial_scale_factor_ = qMin(view_w / pixmap_src_.width(), view_h / pixmap_src_.height());
+    } else {
+        initial_scale_factor_ = display_config::kDefaultScale;
     }
 
+    pixmap_scale_factor_ = initial_scale_factor_;
     UpdateHighQualityPixmap();
 }
 
@@ -79,6 +81,8 @@ void BarcodeView::wheelEvent(QWheelEvent *event) {
     // Restart debounce timer for the high-quality CPU redraw
     timer_zoom_->start(display_config::kZoomDebounceMs);
     event->accept();
+    // Emit zoom level changed signal
+    emit ZoomLevelChanged(pixmap_scale_factor_ * 100, pixmap_src_.size());
 }
 
 void BarcodeView::UpdateHighQualityPixmap() {
@@ -122,4 +126,13 @@ void BarcodeView::UpdateHighQualityPixmap() {
     if (!std::isnan(target_x) && !std::isnan(target_y)) {
         centerOn(target_x, target_y);
     }
+
+    emit ZoomLevelChanged(pixmap_scale_factor_ * 100, pixmap_src_.size());
+}
+
+void BarcodeView::FitToScreen() {
+    if (pixmap_src_.isNull()) return;
+
+    pixmap_scale_factor_ = initial_scale_factor_;
+    UpdateHighQualityPixmap();
 }
