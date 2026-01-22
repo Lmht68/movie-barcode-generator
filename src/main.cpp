@@ -79,21 +79,21 @@ int main(int argc, char *argv[]) {
             // Init app style
             app.setStyle(QStyleFactory::create("fusion"));
             // Init main window
-            MainWindow main_window;
+            MainWindow window_main;
             // Connect to system theme changes while app is running
             QObject::connect(
-                app.styleHints(), &QStyleHints::colorSchemeChanged, &main_window,
-                [&app, &main_window](Qt::ColorScheme scheme) {
+                app.styleHints(), &QStyleHints::colorSchemeChanged, &window_main,
+                [&app, &window_main](Qt::ColorScheme scheme) {
                     spdlog::info("System theme changed, updating UI...");
-                    ApplyTheme(&app, scheme, &main_window);
+                    ApplyTheme(&app, scheme, &window_main);
                 }
             );
 
             // Initial theme application on startup
-            ApplyTheme(&app, app.styleHints()->colorScheme(), &main_window);
+            ApplyTheme(&app, app.styleHints()->colorScheme(), &window_main);
 
             // Init and show main window
-            main_window.show();
+            window_main.show();
 
             return app.exec();
         } catch (const app_exception::LoggerInitException &e) {
