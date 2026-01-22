@@ -2,6 +2,7 @@
 
 #include "utils/constants.h"
 #include "utils/logger.h"
+#include "utils/theme_manager.h"
 
 #include <QAction>
 #include <QApplication>
@@ -50,6 +51,19 @@ void MainWindow::InitMenuBar() {
     menu_file->addAction(action_import_preset_);
     menu_file->addAction(action_export_preset_);
     menu_file->addAction(action_save_preset_);
+
+    // View menu
+    QMenu* menu_view = menuBar()->addMenu(tr("&View"));
+
+    QAction* action_toggle_theme = menu_view->addAction(tr("Toggle Dark Mode"));
+    action_toggle_theme->setCheckable(true);
+
+    action_toggle_theme->setChecked(this->palette().window().color().value() < 128);
+
+    connect(action_toggle_theme, &QAction::toggled, this, [this](bool checked) {
+        Qt::ColorScheme scheme = checked ? Qt::ColorScheme::Dark : Qt::ColorScheme::Light;
+        ThemeManager::ApplyTheme(scheme, this);
+    });
 
     // Help menu
     QMenu* help_menu = menuBar()->addMenu(tr("&Help"));

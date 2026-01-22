@@ -5,6 +5,7 @@ target_sources(app_utils PRIVATE
     constants.h
     logger.h
     exceptions.h
+    theme_manager.h
 
     # Sources
     logger.cpp
